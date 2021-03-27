@@ -3,11 +3,9 @@ import { Redirect, useHistory } from 'react-router';
 import { UserContext } from '../../provider/UserContext';
 import axios from '../../utils/axiosSetup';
 
-export default function UserMiniProfile({ user }) {
+export default function UserMiniProfile({ user, request }) {
 	const [userContext] = useContext(UserContext);
 	const history = useHistory();
-
-	console.log(userContext);
 
 	async function addFriend() {
 		if (!userContext || !userContext.id) {
@@ -17,6 +15,25 @@ export default function UserMiniProfile({ user }) {
 
 		try {
 			await axios.post('/friend-request/send', { id: user._id });
+			alert('Success');
+		} catch (err) {
+			alert((err.response && err.response.data) || 'Something went wrong');
+		}
+	}
+
+	// These could be combined into 1 for optimization but who cares
+	async function acceptFriend() {
+		try {
+			await axios.post('/friend-request/accept', { id: user._id });
+			alert('Success');
+		} catch (err) {
+			alert((err.response && err.response.data) || 'Something went wrong');
+		}
+	}
+
+	async function declineFriend() {
+		try {
+			await axios.post('/friend-request/decline', { id: user._id });
 			alert('Success');
 		} catch (err) {
 			alert((err.response && err.response.data) || 'Something went wrong');
@@ -42,9 +59,26 @@ export default function UserMiniProfile({ user }) {
 				<a href='#'>
 					<i className='fa fa-facebook'></i>
 				</a>
-				<button className='btn btn-dark ml-4 mr-4' onClick={addFriend}>
-					Add friend
-				</button>
+				{request ? (
+					<div className='d-flex accept-decline-btns'>
+						<button className='btn btn-dark ml-4' onClick={acceptFriend}>
+							Accept
+						</button>
+						<button className='btn btn-outline-dark ml-1 mr-4' onClick={declineFriend}>
+							Decline
+						</button>
+					</div>
+				) : (
+					<button
+						disabled={
+							user.friends.includes(userContext.id) ||
+							user.friendRequests.find(el => el.id === userContext.id)
+						}
+						className='btn btn-dark ml-4 mr-4'
+						onClick={addFriend}>
+						Add friend
+					</button>
+				)}
 			</div>
 		</div>
 	);

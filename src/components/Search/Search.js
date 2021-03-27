@@ -75,12 +75,11 @@ export default function Search() {
 						</div>
 					</Collapse>
 				</div>
-
-				<div className='row m-0'>
-					{users.map(el => (
-						<UserMiniProfile key={el._id} user={el} />
-					))}
-				</div>
+			</div>
+			<div className='row m-0'>
+				{users.map(el => (
+					<UserMiniProfile key={el._id} user={el} />
+				))}
 			</div>
 		</>
 	);

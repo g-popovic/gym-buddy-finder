@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 import Search from './Search/Search';
 import Profile from './Profile/Profile';
 import Chat from './Profile/Profile';
+import RequestsPage from './RequestsPage';
 import { NavigationBar } from './NavigationBar';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
@@ -19,6 +20,7 @@ export default function App() {
 						<Route path='/login' component={() => <AuthPage isLogin />} />
 						<Route path='/register' component={AuthPage} />
 						<AuthRoute path='/chat' component={Chat} />
+						<AuthRoute path='/requests' component={RequestsPage} />
 						<AuthRoute path='/profile' component={Profile} />
 					</Switch>
 				</Router>

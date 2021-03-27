@@ -53,8 +53,11 @@ export function NavigationBar() {
 									<Nav.Link href='/profile'>My Profile</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
+									<Nav.Link href='/requests'>Friend Requests</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
 									<Nav.Link href='/login'>Log Out</Nav.Link>
-								</Nav.Item>{' '}
+								</Nav.Item>
 							</>
 						) : (
 							<>

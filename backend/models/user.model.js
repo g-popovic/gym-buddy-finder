@@ -15,6 +15,14 @@ const pointSchema = new mongoose.Schema(
 	{ _id: false }
 );
 
+const requestSchema = new mongoose.Schema(
+	{
+		id: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+		message: String
+	},
+	{ _id: false, timestamps: { updatedAt: false } }
+);
+
 const userSchema = new mongoose.Schema(
 	{
 		email: { type: String, required: true, trim: true, unique: true },
@@ -35,13 +43,7 @@ const userSchema = new mongoose.Schema(
 			type: pointSchema,
 			index: '2dsphere'
 		},
-		friendRequests: [
-			{
-				id: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
-				message: String,
-				date: { type: Date, default: () => new Date() }
-			}
-		],
+		friendRequests: [requestSchema],
 		friends: [{ type: mongoose.Types.ObjectId, ref: 'User' }]
 	},
 	{ versionKey: false, timestamps: { updatedAt: false } }
