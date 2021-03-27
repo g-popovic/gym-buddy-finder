@@ -70,6 +70,9 @@ class LoginForm extends React.Component {
 
 	render() {
 		return (
+			// @Faraz, I changed it to regular inputs cuz it gives more flexibility, and the Inout components you
+			// created don't really have any features that make development faster. I think it's better to just
+			// use vanilla inputs
 			<div className='login-form center text-center'>
 				<h2 className='mb-0'>LOGIN</h2>
 				<h6 className='text-secondary mb-4'>GymBuddy</h6>
