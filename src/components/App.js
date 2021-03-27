@@ -1,11 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import UserStore from '../StoreUserData/UserStore';
+import { UserProvider } from '../context/UserContext';
 
 export default function App() {
 	return (
 		<div>
-			<h1>HEllo WOrld</h1>
+			<UserProvider>
+				<h1>HEllo WOrld</h1>
+			</UserProvider>
 		</div>
 	);
 }
