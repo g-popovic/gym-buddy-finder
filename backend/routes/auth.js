@@ -42,9 +42,7 @@ router.post('/login', async (req, res, next) => {
 router.get('/status', (req, res, next) => {
 	try {
 		res.json({
-			user: {
-				id: req.session.user ? req.session.user.id : null
-			}
+			id: req.session.user ? req.session.user.id : null
 		});
 	} catch (err) {
 		next(err);

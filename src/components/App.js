@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AuthPage from './AuthPage';
-import { UserProvider } from '../provider/UserContext';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { UserProvider, UserContext } from '../provider/UserContext';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import Search from './Search/Search';
 import Profile from './Profile/Profile';
 import Chat from './Profile/Profile';
@@ -11,17 +11,28 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 export default function App() {
 	return (
 		<UserProvider>
+			<AuthRoute />
 			<Router>
 				<NavigationBar />
 				<Switch>
 					<Route exact path='/' component={Search} />
 					<Route path='/login' component={() => <AuthPage isLogin />} />
 					<Route path='/register' component={AuthPage} />
-					<Route path='/chat' component={Chat} />
-					<Route path='/profile' component={Profile} />
+					<AuthRoute path='/chat' component={Chat} />
+					<AuthRoute path='/profile' component={Profile} />
 				</Switch>
 			</Router>
 		</UserProvider>
+	);
+}
+
+function AuthRoute({ path, component }) {
+	const context = useContext(UserContext);
+
+	return !context.id ? (
+		<Redirect to='/register' />
+	) : (
+		<Route exact path='/' component={component} />
 	);
 }
 

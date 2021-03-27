@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from '../../utils/axiosSetup';
+import { UserContext } from '../../provider/UserContext';
 
 export default function LoginPage({ isLogin }) {
 	const [email, setEmail] = useState('');
@@ -7,6 +8,9 @@ export default function LoginPage({ isLogin }) {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
+
+	const value = useContext(UserContext);
+	console.log(value);
 
 	function validatePasswords() {
 		if (password !== confirmPassword) {
