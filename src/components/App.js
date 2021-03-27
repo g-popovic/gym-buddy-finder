@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginForm from './loginPage';
+import AuthPage from './authPage';
 import { UserProvider } from '../provider/UserContext';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Homepage from './homePage';
@@ -10,7 +10,8 @@ export default function App() {
 			<Router>
 				<Switch>
 					<Route path='/' exact component={Homepage} />
-					<Route path='/login' component={LoginForm} />
+					<Route path='/login' component={() => <AuthPage login />} />
+					<Route path='/register' component={() => <AuthPage register />} />
 				</Switch>
 			</Router>
 		</UserProvider>
