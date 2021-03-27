@@ -1,6 +1,6 @@
 import React from 'react';
-import InputField from './inputField';
-import SubmitButton from './SubmitButton';
+// import InputField from './inputField';
+// import SubmitButton from './SubmitButton';
 import UserStore from '../../StoreUserData/UserStore.js';
 
 class LoginForm extends React.Component {
@@ -72,32 +72,20 @@ class LoginForm extends React.Component {
 		return (
 			<div className='login-form center text-center'>
 				<h2 className='mb-0'>LOGIN</h2>
-				<h6 className='text-secondary mb-4'>
-					GymBuddy
-				</h6>
+				<h6 className='text-secondary mb-4'>GymBuddy</h6>
 				<input
 					className='form-control mb-2'
 					type='text'
 					placeholder='Username'
 					value={this.state.username}
-					onChange={e =>
-						this.setInputValue(
-							'username',
-							e.target.value
-						)
-					}
+					onChange={e => this.setInputValue('username', e.target.value)}
 				/>
 				<input
 					className='form-control'
 					type='password'
 					placeholder='Password'
 					value={this.state.password}
-					onChange={e =>
-						this.setInputValue(
-							'password',
-							e.target.value
-						)
-					}
+					onChange={e => this.setInputValue('password', e.target.value)}
 				/>
 				{/* TODO: Change theme primary color */}
 				<button

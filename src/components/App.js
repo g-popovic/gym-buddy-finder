@@ -1,30 +1,16 @@
 import React from 'react';
 import LoginForm from './loginPage';
-import { UserProvider } from '../context/UserContext';
-import {
-	BrowserRouter as Router,
-	Route,
-	Switch
-} from 'react-router-dom';
+import { UserProvider } from '../provider/UserContext';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Homepage from './homePage';
 
 export default function App() {
 	return (
 		<UserProvider>
 			<Router>
 				<Switch>
-					<Route
-						path='/'
-						exact
-						component={() => (
-							<h1 className='center'>
-								Homepage
-							</h1>
-						)}
-					/>
-					<Route
-						path='/login'
-						component={LoginForm}
-					/>
+					<Route path='/' exact component={Homepage} />
+					<Route path='/login' component={LoginForm} />
 				</Switch>
 			</Router>
 		</UserProvider>
