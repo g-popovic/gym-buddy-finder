@@ -1,15 +1,33 @@
 import React from 'react';
-import { observer } from 'mobx-react';
-import UserStore from '../StoreUserData/UserStore';
+import LoginForm from './loginPage';
 import { UserProvider } from '../context/UserContext';
+import {
+	BrowserRouter as Router,
+	Route,
+	Switch
+} from 'react-router-dom';
 
 export default function App() {
 	return (
-		<div>
-			<UserProvider>
-				<h1>HEllo WOrld</h1>
-			</UserProvider>
-		</div>
+		<UserProvider>
+			<Router>
+				<Switch>
+					<Route
+						path='/'
+						exact
+						component={() => (
+							<h1 className='center'>
+								Homepage
+							</h1>
+						)}
+					/>
+					<Route
+						path='/login'
+						component={LoginForm}
+					/>
+				</Switch>
+			</Router>
+		</UserProvider>
 	);
 }
 

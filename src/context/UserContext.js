@@ -18,12 +18,18 @@ export function UserProvider({ children }) {
 		// setUser(data);
 		setTimeout(
 			() => setUser({ customer: { id: '123' } }),
-			3000
+			500
 		);
 	});
 
 	return !user ? (
-		<h1 className='center'>Loading...</h1>
+		<div className='center'>
+			<div className='spinner-border' role='status'>
+				<span className='visually-hidden'>
+					Loading...
+				</span>
+			</div>
+		</div>
 	) : (
 		<UserContext.Provider value={[user, setUser]}>
 			{children}
