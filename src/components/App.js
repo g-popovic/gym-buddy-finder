@@ -2,15 +2,22 @@ import React from 'react';
 import LoginForm from './loginPage';
 import { UserProvider } from '../provider/UserContext';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Homepage from './homePage';
+import Search from './Search/Search'
+import Profile from './Profile/Profile'
+import Chat from './Profile/Profile'
+import { NavigationBar } from './NavigationBar'
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export default function App() {
 	return (
 		<UserProvider>
 			<Router>
+			<NavigationBar />
 				<Switch>
-					<Route path='/' exact component={Homepage} />
 					<Route path='/login' component={LoginForm} />
+					<Route exact path="/" component={Search} />
+					<Route exact path="/Chat" component={Chat} />
+					<Route exact path="/Profile" component={Profile} />
 				</Switch>
 			</Router>
 		</UserProvider>
