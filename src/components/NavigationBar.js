@@ -9,18 +9,18 @@ const Styles = styled.div`
 	a,
 	.navbar-nav,
 	.navbar-light .nav-link {
-		color: #9fffcb;
+		color: white;
 		&:hover {
-			color: white;
+			color: #f0f0f0;
 		}
 		font-size: 20px;
 		margin-left: 25px;
 	}
 	.navbar-brand {
 		font-size: 1.8em;
-		color: #9fffcb;
+		color: white;
 		&:hover {
-			color: white;
+			color: #f0f0f0;
 		}
 	}
 	.form-center {

@@ -23,14 +23,30 @@ router.get('/profile-info', async (req, res, next) => {
 
 router.get('/search-users', async (req, res, next) => {
 	try {
-		const { goal, maxDistance } = req.body;
+		const { goal, maxDistance, page = 0 } = req.body;
+
+		const docsPerPage = 20;
 
 		const locationPlaceholder = {
 			type: 'Point',
 			coordinates: [0.005, 0.00001]
 		};
 
-		const users = null;
+		const users = Users.aggregate([
+			{
+				$geoNear: {
+					near: locationPlaceholder,
+					maxDistance: maxDistance,
+					distanceField: 'distance',
+					query: {
+						...(goal ? { goal: goal } : {})
+					}
+				}
+			},
+			{ $skip: docsPerPage * page },
+			{ $limit: docsPerPage }
+		]);
+		res.json(users);
 	} catch (err) {
 		next(err);
 	}
