@@ -11,16 +11,32 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 export default function App() {
 	return (
 		<UserProvider>
-			<Router>
-				<NavigationBar />
-				<Switch>
-					<Route exact path='/' component={Search} />
-					<Route path='/login' component={() => <AuthPage isLogin />} />
-					<Route path='/register' component={AuthPage} />
-					<AuthRoute path='/chat' component={Chat} />
-					<AuthRoute path='/profile' component={Profile} />
-				</Switch>
-			</Router>
+			<NavigationBar />
+			<div className='page-container'>
+				<Router>
+					<Switch>
+						<Route exact path='/' component={Search} />
+						<Route path='/login' component={() => <AuthPage isLogin />} />
+						<Route path='/register' component={AuthPage} />
+						<AuthRoute path='/chat' component={Chat} />
+						<AuthRoute path='/profile' component={Profile} />
+					</Switch>
+				</Router>
+			</div>
+			<div className='page-background'>
+				<ul className='circles'>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</div>
 		</UserProvider>
 	);
 }

@@ -25,58 +25,56 @@ export default function Search() {
 
 	return (
 		<>
-			<div className='content'>
-				<div className='searchbox-container'>
-					<div className='searchbox'>
-						<div className='searchbox-primary'>
-							<form className='input-group'>
-								<input
-									type='text'
-									className='form-control'
-									placeholder="Recipient's username"
-									aria-label="Recipient's username"
-									aria-describedby='button-addon2'
-								/>
-								<button
-									className='btn btn-outline-secondary search-btn'
-									type='button'
-									id='button-addon2'>
-									Search
-								</button>
-							</form>
-
+			<div className='searchbox-container'>
+				<div className='searchbox'>
+					<div className='searchbox-primary'>
+						<form className='input-group'>
+							<input
+								type='text'
+								className='form-control'
+								placeholder="Recipient's username"
+								aria-label="Recipient's username"
+								aria-describedby='button-addon2'
+							/>
 							<button
 								className='btn btn-outline-secondary search-btn'
-								onClick={() => setFiltersOpen(!filtersOpen)}>
-								More Filters
+								type='button'
+								id='button-addon2'>
+								Search
 							</button>
-						</div>
+						</form>
 
-						<Collapse in={filtersOpen}>
-							<div className='flters-bottom mt-3 row m-0'>
-								<select
-									className='form-select col-4'
-									aria-label='Default select example'>
-									<option defaultValue value=''>
-										Select
-									</option>
-									{fitnessGoalOptions.map(el => (
-										<option value={el}>{el}</option>
-									))}
-								</select>
-								<input
-									type='number'
-									className='form-control col-4'
-									placeholder='Max Distance'
-								/>
-								<input
-									type='number'
-									className='form-control col-4'
-									placeholder='Some other filter'
-								/>
-							</div>
-						</Collapse>
+						<button
+							className='btn btn-outline-secondary search-btn'
+							onClick={() => setFiltersOpen(!filtersOpen)}>
+							More Filters
+						</button>
 					</div>
+
+					<Collapse in={filtersOpen}>
+						<div className='flters-bottom mt-3 row m-0'>
+							<select
+								className='form-select col-4'
+								aria-label='Default select example'>
+								<option defaultValue value=''>
+									Select
+								</option>
+								{fitnessGoalOptions.map(el => (
+									<option value={el}>{el}</option>
+								))}
+							</select>
+							<input
+								type='number'
+								className='form-control col-4'
+								placeholder='Max Distance'
+							/>
+							<input
+								type='number'
+								className='form-control col-4'
+								placeholder='Some other filter'
+							/>
+						</div>
+					</Collapse>
 				</div>
 
 				<div className='row m-0'>
@@ -84,21 +82,6 @@ export default function Search() {
 						<UserMiniProfile user={el} />
 					))}
 				</div>
-			</div>
-
-			<div className='area'>
-				<ul className='circles'>
-					<li></li>
-					<li></li>
-					<li></li>
-					<li></li>
-					<li></li>
-					<li></li>
-					<li></li>
-					<li></li>
-					<li></li>
-					<li></li>
-				</ul>
 			</div>
 		</>
 	);

@@ -80,7 +80,7 @@ export default function LoginPage({ isLogin }) {
 				/>
 			)}
 			<button type='submit' className='mt-3 btn btn-primary w-100' disabled={isLoading}>
-				Login
+				{isLogin ? 'Login' : 'Register'}
 			</button>
 		</form>
 	);

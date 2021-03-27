@@ -4,7 +4,7 @@ import axios from '../../utils/axiosSetup';
 export default function UserMiniProfile({ user }) {
 	async function addFriend() {
 		try {
-			await axios.post('/friend-requests/send', { id: user._id });
+			await axios.post('/friend-request/send', { id: user._id });
 			alert('Success');
 		} catch (err) {
 			alert((err.response && err.response.data) || 'Something went wrong');

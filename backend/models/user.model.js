@@ -41,7 +41,8 @@ const userSchema = new mongoose.Schema(
 				message: String,
 				date: { type: Date, default: () => new Date() }
 			}
-		]
+		],
+		friends: [{ type: mongoose.Types.ObjectId, ref: 'User' }]
 	},
 	{ versionKey: false, timestamps: { updatedAt: false } }
 );
