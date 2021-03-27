@@ -21,4 +21,19 @@ router.get('/profile-info', async (req, res, next) => {
 	}
 });
 
+router.get('/search-users', async (req, res, next) => {
+	try {
+		const { goal, maxDistance } = req.body;
+
+		const locationPlaceholder = {
+			type: 'Point',
+			coordinates: [0.005, 0.00001]
+		};
+
+		const users = null;
+	} catch (err) {
+		next(err);
+	}
+});
+
 module.exports = router;
