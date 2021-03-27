@@ -3,6 +3,7 @@ import React from 'react';
 // import SubmitButton from './SubmitButton';
 import UserStore from '../../StoreUserData/UserStore.js';
 
+// @Faraz: please hook up the actual authentication to MongoDB
 class LoginForm extends React.Component {
 	constructor(props) {
 		super(props);
@@ -70,27 +71,45 @@ class LoginForm extends React.Component {
 
 	render() {
 		return (
-			// @Faraz, I changed it to regular inputs cuz it gives more flexibility, and the Inout components you
+			// @Faraz, I changed it to regular inputs cuz it gives more flexibility, and the Input components you
 			// created don't really have any features that make development faster. I think it's better to just
 			// use vanilla inputs
 			<div className='login-form center text-center'>
-				<h2 className='mb-0'>LOGIN</h2>
+				<h2 className='mb-0'>{this.props.login ? 'LOGIN' : 'REGISTER'}</h2>
 				<h6 className='text-secondary mb-4'>GymBuddy</h6>
 				<input
 					className='form-control mb-2'
 					type='text'
-					placeholder='Username'
-					value={this.state.username}
-					onChange={e => this.setInputValue('username', e.target.value)}
+					placeholder='Email'
+					value={this.state.email}
+					onChange={e => this.setInputValue('email', e.target.value)}
 				/>
+				{this.props.login ? null : (
+					<input
+						className='form-control mb-2'
+						type='text'
+						placeholder='Username'
+						value={this.state.username}
+						onChange={e => this.setInputValue('username', e.target.value)}
+					/>
+				)}
 				<input
-					className='form-control'
+					className='form-control mb-2'
 					type='password'
 					placeholder='Password'
 					value={this.state.password}
 					onChange={e => this.setInputValue('password', e.target.value)}
 				/>
 				{/* TODO: Change theme primary color */}
+				{this.props.login ? null : (
+					<input
+						className='form-control mb-2'
+						type='text'
+						placeholder='Confirm Password'
+						value={this.state.confirmPassword}
+						onChange={e => this.setInputValue('confirmPassword', e.target.value)}
+					/>
+				)}
 				<button
 					className='mt-3 btn btn-primary w-100'
 					disabled={this.state.buttonDisabled}
