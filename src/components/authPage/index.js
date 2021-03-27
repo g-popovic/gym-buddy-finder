@@ -1,124 +1,83 @@
-import React from 'react';
-// import InputField from './inputField';
-// import SubmitButton from './SubmitButton';
-import UserStore from '../../StoreUserData/UserStore.js';
+import React, { useState } from 'react';
+import axios from '../../utils/axiosSetup';
 
-// @Faraz: please hook up the actual authentication to MongoDB
-class LoginForm extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			username: '',
-			password: '',
-			buttonDisabled: false
-		};
-	}
+export default function LoginPage({ isLogin }) {
+	const [email, setEmail] = useState('');
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
-	setInputValue(property, value) {
-		value = value.trim();
-		if (value.length > 12) {
+	function validatePasswords() {
+		if (password !== confirmPassword) {
+			alert("Passwords don't match");
 			return;
 		}
-		this.setState({
-			[property]: value
-		});
+		return true;
 	}
 
-	resetForm() {
-		this.setState({
-			username: '',
-			password: '',
-			buttonDisabled: false
-		});
-	}
-
-	async doLogin() {
-		if (!this.state.username) {
-			return;
-		}
-		if (!this.state.password) {
-			return;
-		}
-
-		this.setState({ buttonDisabled: true });
+	async function authenticate(e) {
+		e.preventDefault();
+		if (!isLogin && !validatePasswords()) return;
 
 		try {
-			let res = await fetch('login/', {
-				method: 'post',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					username: this.state.username,
-					password: this.state.password
-				})
-			});
-
-			let result = await res.json();
-			if (result && result.success) {
-				UserStore.isLoggedIn = true;
-				UserStore.username = result.username;
-			} else if (result && result.success === false) {
-				this.resetForm();
-				alert(result.msg);
+			if (isLogin) {
+				await axios.post('/auth/login', { email, password });
+			} else {
+				// TODO: Figure out coordinates. Right now I'm just passing in 0,0
+				await axios.post('/auth/register', {
+					email,
+					username,
+					password,
+					location: { coordinates: [0, 0] }
+				});
 			}
-		} catch (e) {
-			console.log(e);
-			this.resetForm();
+			alert('Success');
+		} catch (err) {
+			console.error(err);
+			alert((err.response && err.response.message) || 'Unexpected error');
 		}
 	}
 
-	render() {
-		return (
-			// @Faraz, I changed it to regular inputs cuz it gives more flexibility, and the Input components you
-			// created don't really have any features that make development faster. I think it's better to just
-			// use vanilla inputs
-			<div className='login-form center text-center'>
-				<h2 className='mb-0'>{this.props.login ? 'LOGIN' : 'REGISTER'}</h2>
-				<h6 className='text-secondary mb-4'>GymBuddy</h6>
+	return (
+		<form onSubmit={authenticate} className='login-form center text-center'>
+			<h2 className='mb-0'>{isLogin ? 'LOGIN' : 'REGISTER'}</h2>
+			<h6 className='text-secondary mb-4'>GymBuddy</h6>
+			<input
+				className='form-control mb-2'
+				type='email'
+				placeholder='Email'
+				value={email}
+				onChange={e => setEmail(e.target.value)}
+			/>
+			{isLogin ? null : (
 				<input
 					className='form-control mb-2'
-					type='text'
-					placeholder='Email'
-					value={this.state.email}
-					onChange={e => this.setInputValue('email', e.target.value)}
+					placeholder='Username'
+					value={username}
+					onChange={e => setUsername(e.target.value)}
 				/>
-				{this.props.login ? null : (
-					<input
-						className='form-control mb-2'
-						type='text'
-						placeholder='Username'
-						value={this.state.username}
-						onChange={e => this.setInputValue('username', e.target.value)}
-					/>
-				)}
+			)}
+			<input
+				className='form-control mb-2'
+				type='password'
+				placeholder='Password'
+				value={password}
+				onChange={e => setPassword(e.target.value)}
+			/>
+			{/* TODO: Change theme primary color */}
+			{isLogin ? null : (
 				<input
 					className='form-control mb-2'
 					type='password'
-					placeholder='Password'
-					value={this.state.password}
-					onChange={e => this.setInputValue('password', e.target.value)}
+					placeholder='Confirm Password'
+					value={confirmPassword}
+					onChange={e => setConfirmPassword(e.target.value)}
 				/>
-				{/* TODO: Change theme primary color */}
-				{this.props.login ? null : (
-					<input
-						className='form-control mb-2'
-						type='text'
-						placeholder='Confirm Password'
-						value={this.state.confirmPassword}
-						onChange={e => this.setInputValue('confirmPassword', e.target.value)}
-					/>
-				)}
-				<button
-					className='mt-3 btn btn-primary w-100'
-					disabled={this.state.buttonDisabled}
-					onClick={() => this.doLogin()}>
-					Login
-				</button>
-			</div>
-		);
-	}
+			)}
+			<button type='submit' className='mt-3 btn btn-primary w-100' disabled={isLoading}>
+				Login
+			</button>
+		</form>
+	);
 }
-
-export default LoginForm;

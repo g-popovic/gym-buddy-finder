@@ -15,10 +15,10 @@ export default function App() {
 				<NavigationBar />
 				<Switch>
 					<Route exact path='/' component={Search} />
-					<Route path='/login' component={() => <AuthPage login />} />
-					<Route path='/register' component={() => <AuthPage register />} />
-					<Route path='/Chat' component={Chat} />
-					<Route path='/Profile' component={Profile} />
+					<Route path='/login' component={() => <AuthPage isLogin />} />
+					<Route path='/register' component={AuthPage} />
+					<Route path='/chat' component={Chat} />
+					<Route path='/profile' component={Profile} />
 				</Switch>
 			</Router>
 		</UserProvider>
