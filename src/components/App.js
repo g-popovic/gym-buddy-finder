@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthPage from './authPage';
+import AuthPage from './AuthPage';
 import { UserProvider } from '../provider/UserContext';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Search from './Search/Search';
