@@ -33,7 +33,7 @@ app.use(
 		}
 	})
 );
-
+app.use(express.json());
 if (!isProduction) {
 	// app.use(cors());
 	app.use(
@@ -44,7 +44,7 @@ if (!isProduction) {
 	);
 }
 
-app.use(routes);
+app.use('/api', routes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log('Server running on port ' + PORT));

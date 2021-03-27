@@ -11,9 +11,8 @@ export function UserProvider({ children }) {
 
 	useEffect(async () => {
 		try {
-			// const { data } = await axios.get('/auth/status');
-			// console.log(data);
-			setUser({ user: { id: 'placeholder' } });
+			const { data } = await axios.get('/auth/status');
+			setUser(data);
 		} catch (err) {
 			console.error(err);
 		}
