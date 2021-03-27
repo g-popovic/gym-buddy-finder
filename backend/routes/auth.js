@@ -1,11 +1,10 @@
 const router = require('express').Router();
+const User = require('../models/user.model');
 
 router.get('/status', async (req, res) => {
-	// TODO: Check session for logged in user's id
-
 	res.json({
 		user: {
-			id: 'placeholder'
+			id: req.session.user ? req.session.user.id : null
 		}
 	});
 });
