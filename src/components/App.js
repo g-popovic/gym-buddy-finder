@@ -42,12 +42,12 @@ export default function App() {
 }
 
 function AuthRoute({ path, component }) {
-	const context = useContext(UserContext);
+	const [context] = useContext(UserContext);
 
-	return !context.id ? (
+	return context.id === undefined ? null : context.id === null ? (
 		<Redirect to='/register' />
 	) : (
-		<Route exact path='/' component={component} />
+		<Route exact path={path} component={component} />
 	);
 }
 

@@ -6,4 +6,4 @@
 
 ### Start backend server
 
-`nodemon ./backend/server.js`
+`npm run backend`

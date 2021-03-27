@@ -17,7 +17,6 @@ export default function Search() {
 		try {
 			const { data } = await axios.get('/search-users', { page });
 			setUsers(data);
-			console.log(data);
 		} catch (err) {
 			alert((err.response && err.response.data) || 'Error!');
 		}
@@ -79,7 +78,7 @@ export default function Search() {
 
 				<div className='row m-0'>
 					{users.map(el => (
-						<UserMiniProfile user={el} />
+						<UserMiniProfile key={el._id} user={el} />
 					))}
 				</div>
 			</div>

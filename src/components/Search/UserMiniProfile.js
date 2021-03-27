@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Redirect, useHistory } from 'react-router';
+import { UserContext } from '../../provider/UserContext';
 import axios from '../../utils/axiosSetup';
 
 export default function UserMiniProfile({ user }) {
+	const [userContext] = useContext(UserContext);
+	const history = useHistory();
+
+	console.log(userContext);
+
 	async function addFriend() {
+		if (!userContext || !userContext.id) {
+			history.push('/register');
+			return;
+		}
+
 		try {
 			await axios.post('/friend-request/send', { id: user._id });
 			alert('Success');

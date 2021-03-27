@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import axios from '../../utils/axiosSetup';
 import { UserContext } from '../../provider/UserContext';
+import { useHistory } from 'react-router';
 
 export default function LoginPage({ isLogin }) {
 	const [email, setEmail] = useState('');
@@ -8,9 +9,8 @@ export default function LoginPage({ isLogin }) {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
-
-	const value = useContext(UserContext);
-	console.log(value);
+	const [userContext, setUserContext] = useContext(UserContext);
+	const history = useHistory();
 
 	function validatePasswords() {
 		if (password !== confirmPassword) {
@@ -25,18 +25,20 @@ export default function LoginPage({ isLogin }) {
 		if (!isLogin && !validatePasswords()) return;
 
 		try {
+			let result;
 			if (isLogin) {
-				await axios.post('/auth/login', { email, password });
+				result = await axios.post('/auth/login', { email, password });
 			} else {
 				// TODO: Figure out coordinates. Right now I'm just passing in 0,0
-				await axios.post('/auth/register', {
+				result = await axios.post('/auth/register', {
 					email,
 					username,
 					password,
 					location: { coordinates: [0, 0] }
 				});
 			}
-			alert('Success');
+			setUserContext(result.data);
+			history.push('/');
 		} catch (err) {
 			console.error(err);
 			alert((err.response && err.response.message) || 'Unexpected error');

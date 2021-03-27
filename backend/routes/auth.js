@@ -9,7 +9,7 @@ router.post('/register', async (req, res, next) => {
 		const newUser = new User(data);
 		await newUser.save();
 		req.session.user = { id: newUser._id };
-		res.sendStatus(200);
+		res.json({ id: newUser._id });
 	} catch (err) {
 		next(err);
 	}
@@ -25,7 +25,7 @@ router.post('/login', async (req, res, next) => {
 			return res.status(401).send('Incorrect password');
 
 		req.session.user = { id: user._id };
-		res.sendStatus(200);
+		res.json({ id: user._id });
 	} catch (err) {
 		next(err);
 	}
@@ -41,6 +41,7 @@ router.post('/login', async (req, res, next) => {
 
 router.get('/status', (req, res, next) => {
 	try {
+		console.log(req.session);
 		res.json({
 			id: req.session.user ? req.session.user.id : null
 		});

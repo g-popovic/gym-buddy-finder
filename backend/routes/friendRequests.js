@@ -17,7 +17,7 @@ router.post('/send', authUser, async (req, res, next) => {
 						}
 					}
 				},
-				friends: { $not: id }
+				friends: { $nin: id }
 			},
 			{ $push: { friendRequests: { id, message } } }
 		);

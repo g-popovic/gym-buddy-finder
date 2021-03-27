@@ -47,10 +47,10 @@ export function NavigationBar() {
 									<Nav.Link href='/'>Search</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link href='/Chat'>Chat</Nav.Link>
+									<Nav.Link href='/chat'>Chat</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link href='/Profile'>My Profile</Nav.Link>
+									<Nav.Link href='/profile'>My Profile</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
 									<Nav.Link href='/login'>Log Out</Nav.Link>
