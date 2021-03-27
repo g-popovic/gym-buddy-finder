@@ -1,11 +1,27 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { Collapse } from 'react-bootstrap';
+import axios from '../../utils/axiosSetup';
 import './search.scss';
+import UserMiniProfile from './UserMiniProfile';
 
 const fitnessGoalOptions = ['Weight Loss', 'Muscle Building', 'No Goal', 'Competitive Lifting'];
 
 export default function Search() {
 	const [filtersOpen, setFiltersOpen] = useState(false);
+	const [users, setUsers] = useState([]);
+	const [page, setPage] = useState(0);
+
+	useEffect(loadUsers, []);
+
+	async function loadUsers() {
+		try {
+			const { data } = await axios.get('/search-users', { page });
+			setUsers(data);
+			console.log(data);
+		} catch (err) {
+			alert((err.response && err.response.data) || 'Error!');
+		}
+	}
 
 	return (
 		<>
@@ -41,7 +57,7 @@ export default function Search() {
 								<select
 									className='form-select col-4'
 									aria-label='Default select example'>
-									<option selected value=''>
+									<option defaultValue value=''>
 										Select
 									</option>
 									{fitnessGoalOptions.map(el => (
@@ -64,101 +80,9 @@ export default function Search() {
 				</div>
 
 				<div className='row m-0'>
-					<div className='column'>
-						<div className='card'>
-							<img src='2.png' />
-							<h1>Name</h1>
-							<p className='title'>CEO & Founder</p>
-							<p>Skill</p>
-							<a href='#'>
-								<i className='fa fa-instagram'></i>
-							</a>
-							<a href='#'>
-								<i className='fa fa-twitter'></i>
-							</a>
-							<a href='#'>
-								<i className='fa fa-dribbble'></i>
-							</a>
-							<a href='#'>
-								<i className='fa fa-facebook'></i>
-							</a>
-							<p>
-								<button>Add friend</button>
-							</p>
-						</div>
-					</div>
-
-					<div className='column'>
-						<div className='card'>
-							<img src='2.png' />
-							<h1>Name</h1>
-							<p className='title'>CEO & Founder</p>
-							<p>Skill</p>
-							<a href='#'>
-								<i className='fa fa-instagram'></i>
-							</a>
-							<a href='#'>
-								<i className='fa fa-twitter'></i>
-							</a>
-							<a href='#'>
-								<i className='fa fa-dribbble'></i>
-							</a>
-							<a href='#'>
-								<i className='fa fa-facebook'></i>
-							</a>
-							<p>
-								<button>Add friend</button>
-							</p>
-						</div>
-					</div>
-
-					<div className='column'>
-						<div className='card'>
-							<img src='2.png' />
-							<h1>Name</h1>
-							<p className='title'>CEO & Founder</p>
-							<p>Skill</p>
-							<a href='#'>
-								<i className='fa fa-instagram'></i>
-							</a>
-							<a href='#'>
-								<i className='fa fa-twitter'></i>
-							</a>
-							<a href='#'>
-								<i className='fa fa-dribbble'></i>
-							</a>
-							<a href='#'>
-								<i className='fa fa-facebook'></i>
-							</a>
-							<p>
-								<button>Add friend</button>
-							</p>
-						</div>
-					</div>
-
-					<div className='column'>
-						<div className='card'>
-							<img src='2.png' />
-							<h1>Name</h1>
-							<p className='title'>CEO & Founder</p>
-							<p>Skill</p>
-							<a href='#'>
-								<i className='fa fa-instagram'></i>
-							</a>
-							<a href='#'>
-								<i className='fa fa-twitter'></i>
-							</a>
-							<a href='#'>
-								<i className='fa fa-dribbble'></i>
-							</a>
-							<a href='#'>
-								<i className='fa fa-facebook'></i>
-							</a>
-							<p>
-								<button>Add friend</button>
-							</p>
-						</div>
-					</div>
+					{users.map(el => (
+						<UserMiniProfile user={el} />
+					))}
 				</div>
 			</div>
 

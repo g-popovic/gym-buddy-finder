@@ -1,8 +1,11 @@
 const router = require('express').Router();
 const User = require('../models/user.model');
 const authRoutes = require('./auth');
+const friendRequestRoutes = require('./friendRequests');
+const mongoose = require('mongoose');
 
 router.use('/auth', authRoutes);
+router.use('/friend-request', friendRequestRoutes);
 
 router.get('/profile-info', async (req, res, next) => {
 	try {
@@ -23,7 +26,7 @@ router.get('/profile-info', async (req, res, next) => {
 
 router.get('/search-users', async (req, res, next) => {
 	try {
-		const { goal, maxDistance, page = 0 } = req.body;
+		const { goal, maxDistance = 10000, page = 0 } = req.body;
 
 		const docsPerPage = 20;
 
@@ -32,13 +35,16 @@ router.get('/search-users', async (req, res, next) => {
 			coordinates: [0.005, 0.00001]
 		};
 
-		const users = Users.aggregate([
+		const users = await User.aggregate([
 			{
 				$geoNear: {
 					near: locationPlaceholder,
 					maxDistance: maxDistance,
 					distanceField: 'distance',
 					query: {
+						...(req.session.user
+							? { _id: { $ne: mongoose.Types.ObjectId(req.session.user.id) } }
+							: {}),
 						...(goal ? { goal: goal } : {})
 					}
 				}

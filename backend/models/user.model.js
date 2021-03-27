@@ -34,7 +34,14 @@ const userSchema = new mongoose.Schema(
 		location: {
 			type: pointSchema,
 			index: '2dsphere'
-		}
+		},
+		friendRequests: [
+			{
+				id: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+				message: String,
+				date: { type: Date, default: () => new Date() }
+			}
+		]
 	},
 	{ versionKey: false, timestamps: { updatedAt: false } }
 );
