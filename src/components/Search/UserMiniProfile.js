@@ -71,8 +71,10 @@ export default function UserMiniProfile({ user, request }) {
 				) : (
 					<button
 						disabled={
-							user.friends.includes(userContext.id) ||
-							user.friendRequests.find(el => el.id === userContext.id)
+							!!userContext.id &&
+							(user.friends.includes(userContext.id) ||
+								user.friendRequests.find(el => el.id === userContext.id) ||
+								userContext.friendRequests.includes(user._id))
 						}
 						className='btn btn-dark ml-4 mr-4'
 						onClick={addFriend}>

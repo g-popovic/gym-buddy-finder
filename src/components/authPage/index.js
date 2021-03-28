@@ -37,6 +37,7 @@ export default function LoginPage({ isLogin }) {
 					location: { coordinates: [0, 0] }
 				});
 			}
+			console.log(result);
 			setUserContext(result.data);
 			history.push('/');
 		} catch (err) {

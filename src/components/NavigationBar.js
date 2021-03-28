@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Nav, Navbar, Form, FormControl } from 'react-bootstrap';
 import styled from 'styled-components';
 import { UserContext } from '../provider/UserContext';
+import axios from '../utils/axiosSetup';
 
 const Styles = styled.div`
 	.navbar {
@@ -34,6 +35,11 @@ const Styles = styled.div`
 export function NavigationBar() {
 	const [userContext] = useContext(UserContext);
 
+	async function logout() {
+		await axios.post('/auth/logout');
+		window.location.replace('/');
+	}
+
 	return (
 		<Styles>
 			<Navbar expand='lg'>
@@ -56,7 +62,7 @@ export function NavigationBar() {
 									<Nav.Link href='/requests'>Friend Requests</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link href='/login'>Log Out</Nav.Link>
+									<Nav.Link onClick={logout}>Log Out</Nav.Link>
 								</Nav.Item>
 							</>
 						) : (

@@ -1,9 +1,12 @@
 require('dotenv').config();
 const express = require('express');
+const http = require('http');
 const routes = require('./routes');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const setupSockets = require('./utils/socketSetup');
+const sessionStore = new session.MemoryStore();
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -30,7 +33,8 @@ app.use(
 			maxAge: 1000 * 60 * 60 * 24 * 30
 			// secure: isProduction,
 			// httpOnly: false
-		}
+		},
+		store: sessionStore
 	})
 );
 app.use(express.json());
@@ -46,5 +50,9 @@ if (!isProduction) {
 
 app.use('/api', routes);
 
+const server = http.createServer(app);
+
+setupSockets(server);
+
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log('Server running on port ' + PORT));
+server.listen(PORT, () => console.log('Server running on port ' + PORT));
