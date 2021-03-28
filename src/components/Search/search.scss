@@ -102,3 +102,16 @@ button:hover {
 .accept-decline-btns > button {
 	flex-basis: 50%;
 }
+
+.column .card {
+	border-radius: 0.4rem;
+	text-align: center;
+}
+
+.search-avatar {
+	width: 14rem;
+	height: 14rem;
+	object-fit: cover;
+	border-radius: 20rem;
+	margin: 0 auto 0.5rem !important;
+}

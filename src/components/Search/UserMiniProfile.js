@@ -43,22 +43,12 @@ export default function UserMiniProfile({ user, request }) {
 	return (
 		<div className='column'>
 			<div className='card'>
-				<img src={user.imgUrl} />
+				<img src={user.imgUrl} className='search-avatar' />
 				<h1>{user.username}</h1>
-				<p className='title'>CEO & Founder</p>
-				<p>Skill</p>
-				<a href='#'>
-					<i className='fa fa-instagram'></i>
-				</a>
-				<a href='#'>
-					<i className='fa fa-twitter'></i>
-				</a>
-				<a href='#'>
-					<i className='fa fa-dribbble'></i>
-				</a>
-				<a href='#'>
-					<i className='fa fa-facebook'></i>
-				</a>
+				<div className='d-flex justify-content-center align-items-center mb-4'>
+					<p className='text-secondary mb-0 mr-2 mt-0'>Goal:</p>
+					<h5 className='mt-0 mb-1'>{user.fitnessGoal}</h5>
+				</div>
 				{request ? (
 					<div className='d-flex accept-decline-btns'>
 						<button className='btn btn-dark ml-4' onClick={acceptFriend}>

@@ -17,11 +17,13 @@ export default function RequestsPage() {
 		}
 	}
 
-	return (
+	return users.length ? (
 		<div className='row m-0'>
 			{users.map(el => (
 				<UserMiniProfile key={el._id} user={el} request />
 			))}
 		</div>
+	) : (
+		<h2 className='center text-white'>No Friend Requests</h2>
 	);
 }

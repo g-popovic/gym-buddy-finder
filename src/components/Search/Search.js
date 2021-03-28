@@ -10,6 +10,8 @@ export default function Search() {
 	const [filtersOpen, setFiltersOpen] = useState(false);
 	const [users, setUsers] = useState([]);
 	const [page, setPage] = useState(0);
+	const [maxDistance, setMaxDistance] = useState(10000);
+	const [fitnessGoal, setFitnessGoal] = useState();
 
 	useEffect(loadUsers, []);
 
@@ -36,7 +38,7 @@ export default function Search() {
 								aria-describedby='button-addon2'
 							/>
 							<button
-								className='btn btn-outline-secondary search-btn'
+								className='btn btn-outline-dark search-btn'
 								type='button'
 								id='button-addon2'>
 								Search
@@ -44,7 +46,7 @@ export default function Search() {
 						</form>
 
 						<button
-							className='btn btn-outline-secondary search-btn'
+							className='btn btn-outline-dark search-btn'
 							onClick={() => setFiltersOpen(!filtersOpen)}>
 							More Filters
 						</button>
@@ -53,7 +55,9 @@ export default function Search() {
 					<Collapse in={filtersOpen}>
 						<div className='flters-bottom mt-3 row m-0'>
 							<select
-								className='form-select col-4'
+								value={fitnessGoal}
+								onChange={e => setFitnessGoal(e.target.value)}
+								className='form-select col-3'
 								aria-label='Default select example'>
 								<option defaultValue value=''>
 									Select
@@ -63,14 +67,11 @@ export default function Search() {
 								))}
 							</select>
 							<input
+								value={maxDistance}
+								onChange={e => setMaxDistance(e.target.value)}
 								type='number'
-								className='form-control col-4'
+								className='form-control col-3'
 								placeholder='Max Distance'
-							/>
-							<input
-								type='number'
-								className='form-control col-4'
-								placeholder='Some other filter'
 							/>
 						</div>
 					</Collapse>
