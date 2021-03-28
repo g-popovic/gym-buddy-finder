@@ -6,7 +6,7 @@
 	justify-content: space-between;
 	align-items: stretch;
 	flex-direction: column;
-	min-height: 70vh;
+	height: 70vh;
 }
 
 .chatScreen_message {
@@ -50,4 +50,13 @@
 .chats-container {
 	background: white;
 	border-radius: 0.4rem;
+}
+
+// .messages {
+// 	overflow: auto;
+// }
+
+.messages-container {
+	flex-grow: 1;
+	overflow: auto;
 }

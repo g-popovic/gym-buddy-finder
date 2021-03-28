@@ -124,35 +124,37 @@ const ChatScreen = () => {
 				)}
 			</div>
 			<div className='chatScreen col-9'>
-				<div>
-					{currentFriend ? (
-						<>
-							{' '}
-							<p className='chatScreen_timestamp'>
-								{'CONVERSATION WITH ' +
-									friends.find(el => el._id === currentFriend).username}
-							</p>
-							{!messages ? (
-								<h3 className='center text-secondary'>Loading...</h3>
-							) : (
-								messages.map(message =>
-									message.name ? (
-										<div className='chatScreen_message'>
-											<p className='chatScreen_text'>{message.message}</p>
-										</div>
-									) : (
-										<div className='chatScreen_message'>
-											<p className='chatScreen_text text_user'>
-												{message.message}
-											</p>
-										</div>
+				<div className='messages-container'>
+					<div className='messages'>
+						{currentFriend ? (
+							<>
+								{' '}
+								<p className='chatScreen_timestamp'>
+									{'CONVERSATION WITH ' +
+										friends.find(el => el._id === currentFriend).username}
+								</p>
+								{!messages ? (
+									<h3 className='center text-secondary'>Loading...</h3>
+								) : (
+									messages.map(message =>
+										message.name ? (
+											<div className='chatScreen_message'>
+												<p className='chatScreen_text'>{message.message}</p>
+											</div>
+										) : (
+											<div className='chatScreen_message'>
+												<p className='chatScreen_text text_user'>
+													{message.message}
+												</p>
+											</div>
+										)
 									)
-								)
-							)}
-						</>
-					) : (
-						<h3 className='center text-secondary'>Select a friend</h3>
-					)}
+								)}
+							</>
+						) : (
+							<h3 className='center text-secondary'>Select a friend</h3>
+						)}
+					</div>
 				</div>
 				{!currentFriend ? null : (
 					<form onSubmit={sendMessage} className='input-group'>
