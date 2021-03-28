@@ -4,12 +4,15 @@ import io from 'socket.io-client';
 import { UserContext } from '../../provider/UserContext';
 import Chats from './Chats';
 import './ChatScreen.scss';
+import axiosSetup from '../../utils/axiosSetup';
 
 let socket;
 
 const ChatScreen = () => {
 	const [userContext] = useContext(UserContext);
 	const [input, setInput] = useState('');
+	const [currentFriend, setCurrentFriend] = useState();
+	const [friends, setFriends] = useState(null);
 	const [messages, setMessages] = useState([
 		{
 			name: 'Ellen',
@@ -28,7 +31,7 @@ const ChatScreen = () => {
 		}
 	]);
 
-	useEffect(() => {
+	useEffect(async () => {
 		socket = io(process.env.REACT_APP_ORIGIN, {
 			withCredentials: true,
 			query: {
@@ -37,8 +40,20 @@ const ChatScreen = () => {
 		});
 
 		socket.on('new-message', message => {
+			console.log('new message recieved: ', message);
 			setMessages(prev => [...prev, message]);
 		});
+
+		socket.on('message-error', error => console.error(error));
+
+		try {
+			const { data } = await axiosSetup.get('/friends');
+			console.log(data);
+			setFriends(data);
+		} catch (err) {
+			console.error(err);
+			alert(err.response ? err.repsonse.data : 'Error');
+		}
 
 		return () => {
 			socket.emit('disconnect');
@@ -49,28 +64,27 @@ const ChatScreen = () => {
 
 	useEffect(() => {}, []);
 
-	// useEffect(() => {
-	// 	setMessages("loading");
-	// 	async function getOldMessages() {
-	// 		setMessages(
-	// 			(
-	// 				await axiosApp.get("/chat/get-messages/" + props.id, {
-	// 					withCredentials: true
-	// 				})
-	// 			).data.messages
-	// 		);
-	// 	}
+	useEffect(() => {
+		if (!currentFriend) return;
+		setMessages(null);
+		console.log({ currentFriend });
 
-	// 	getOldMessages();
-	// }, [props.id]);
+		async function getOldMessages() {
+			const { data } = await axiosSetup.get('/messages/' + currentFriend);
+			console.log(data);
+			setMessages(data);
+		}
+		getOldMessages();
+	}, [currentFriend]);
 
 	function sendMessage(e) {
 		e.preventDefault();
+		console.log('bruh');
 
 		if (input.length) {
 			socket.emit('send-message', {
 				message: input,
-				recipient: 'RECIPIENT'
+				id: currentFriend
 			});
 			setInput('');
 		}
@@ -98,39 +112,65 @@ const ChatScreen = () => {
 
 	return (
 		<div className='row chats-container m-0'>
-			<div className='col-3'>
-				<Chats />
+			<div className='col-3 p-relative'>
+				{!friends ? (
+					<div className='center'>
+						<div className='spinner-border' role='status'>
+							<span className='visually-hidden'>Loading...</span>
+						</div>
+					</div>
+				) : (
+					<Chats current={currentFriend} select={setCurrentFriend} friends={friends} />
+				)}
 			</div>
 			<div className='chatScreen col-9'>
 				<div>
-					<p className='chatScreen_timestamp'>YOU MATCHED WITH ELLEN ON 10/08/20</p>
-					{messages.map(message =>
-						message.name ? (
-							<div className='chatScreen_message'>
-								<p className='chatScreen_text'>{message.message}</p>
-							</div>
-						) : (
-							<div className='chatScreen_message'>
-								<p className='chatScreen_text text_user'>{message.message}</p>
-							</div>
-						)
+					{currentFriend ? (
+						<>
+							{' '}
+							<p className='chatScreen_timestamp'>
+								{'CONVERSATION WITH ' +
+									friends.find(el => el._id === currentFriend).username}
+							</p>
+							{!messages ? (
+								<h3 className='center text-secondary'>Loading...</h3>
+							) : (
+								messages.map(message =>
+									message.name ? (
+										<div className='chatScreen_message'>
+											<p className='chatScreen_text'>{message.message}</p>
+										</div>
+									) : (
+										<div className='chatScreen_message'>
+											<p className='chatScreen_text text_user'>
+												{message.message}
+											</p>
+										</div>
+									)
+								)
+							)}
+						</>
+					) : (
+						<h3 className='center text-secondary'>Select a friend</h3>
 					)}
 				</div>
-				<form onSubmit={sendMessage} className='input-group'>
-					<input
-						type='text'
-						className='form-control'
-						placeholder="Recipient's username"
-						aria-label="Recipient's username"
-						aria-describedby='button-addon2'
-					/>
-					<button
-						className='btn btn-outline-dark search-btn'
-						type='button'
-						id='button-addon2'>
-						SEND
-					</button>
-				</form>
+				{!currentFriend ? null : (
+					<form onSubmit={sendMessage} className='input-group'>
+						<input
+							autoFocus
+							type='text'
+							className='form-control'
+							placeholder="Recipient's username"
+							aria-label="Recipient's username"
+							aria-describedby='button-addon2'
+							value={input}
+							onChange={e => setInput(e.target.value)}
+						/>
+						<button className='btn btn-outline-dark search-btn' type='submit'>
+							SEND
+						</button>
+					</form>
+				)}
 			</div>
 		</div>
 	);

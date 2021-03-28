@@ -43,28 +43,37 @@ function setupSockets(server, memoryStore) {
         */
 		// NOTE: This is a HACK and has as much security as using a cheeto as a lock
 		const userId = socket.handshake.query.id;
-		if (!userId) next(new Error('Unauthorized'));
+		if (!userId) return next(new Error('Unauthorized'));
 		socket.userId = userId;
+		next();
 	}).on('connection', async socket => {
 		// Make the user appear online & emit an event signaling the user is now online,
 		// & store the connection in 'sockets' variable
-		// sockets[socket.userId]= socket.id;
-		console.log('U R CONNECTED');
+		sockets[socket.userId] = socket.id;
 
-		socket.on('send-message', async ({ message, recipient }) => {
-			if (!mongoose.isValidObjectId(recipient)) return;
+		socket.on('send-message', async ({ message, id }) => {
+			console.log({ message, id });
+			if (!mongoose.isValidObjectId(id)) {
+				console.log('invalid object id: ' + mongoose.isValidObjectId(id));
+				return;
+			}
+
 			try {
-				const message = await new Message({
+				const newMessage = await new Message({
 					from: socket.userId,
-					to: recipient,
+					to: id,
 					message
 				}).save();
+				console.log('saved message');
 
-				const recipient = sockets[recipient];
+				const recipient = sockets[id];
 
-				io.to(recipient).to(socket.id).emit('new-message', message);
+				console.log({ recipient, myId: socket.id });
+
+				io.to(recipient).to(socket.id).emit('new-message', newMessage);
 			} catch (err) {
-				socket.emit('message-error', 'Error sending message');
+				console.error(err);
+				socket.emit('message-error', err);
 			}
 		});
 	});

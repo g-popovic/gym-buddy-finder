@@ -1,9 +1,14 @@
 .chat {
+	cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: 1rem 0.5rem;
 	border-bottom: 1px solid #f0f0f0;
+}
+
+.chat-active {
+	background-color: #f2f2f2;
 }
 
 a {
@@ -24,5 +29,11 @@ a {
 }
 
 .chat_image {
-	margin-right: 20px;
+	padding: 0;
+	width: 4rem;
+	height: 4rem;
+	object-fit: cover;
+	border-radius: 100rem;
+	margin: 0;
+	margin-right: 0.6rem;
 }

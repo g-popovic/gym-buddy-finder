@@ -3,6 +3,8 @@ const User = require('../models/user.model');
 const authRoutes = require('./auth');
 const friendRequestRoutes = require('./friendRequests');
 const mongoose = require('mongoose');
+const { authUser } = require('../middleware/authMiddleware');
+const Message = require('../models/message.model');
 
 router.use('/auth', authRoutes);
 router.use('/friend-request', friendRequestRoutes);
@@ -56,6 +58,54 @@ router.get('/search-users', async (req, res, next) => {
 	} catch (err) {
 		next(err);
 	}
+});
+
+router.get('/friends', authUser, async (req, res, next) => {
+	try {
+		const myId = mongoose.Types.ObjectId(req.user.id);
+
+		const result = await User.aggregate([
+			{
+				$match: {
+					friends: myId
+				}
+			},
+			{
+				$unset: ['password', 'friendRequests']
+			}
+		]);
+		res.json(result);
+	} catch (err) {
+		next(err);
+	}
+});
+
+router.get('/messages/:id', authUser, async (req, res, next) => {
+	try {
+		const friendId = mongoose.Types.ObjectId(req.params.id);
+		const myId = mongoose.Types.ObjectId(req.user.id);
+
+		console.log({ myId, friendId });
+		const result = await Message.aggregate([
+			{
+				$match: {
+					$or: [
+						{ to: myId, from: friendId },
+						{ to: friendId, from: myId }
+					]
+				}
+			}
+		]);
+
+		res.json(result);
+	} catch (err) {
+		next(err);
+	}
+});
+
+router.use((err, req, res, next) => {
+	console.error(err);
+	res.status(500).send('There was an error');
 });
 
 module.exports = router;
