@@ -1,9 +1,7 @@
 # HOW TO RUN
 
-### Start frontend server
+1. Run `npm install`
 
-`npm start`
+2. Run `npm start`
 
-### Start backend server
-
-`npm run backend`
+3. In another terminal, run `npm run backend`
