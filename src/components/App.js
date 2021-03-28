@@ -4,7 +4,7 @@ import { UserProvider, UserContext } from '../provider/UserContext';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import Search from './Search/Search';
 import Profile from './Profile/Profile';
-import Chat from './Profile/Profile';
+import Chat from './Chat/ChatScreen';
 import RequestsPage from './RequestsPage';
 import { NavigationBar } from './NavigationBar';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';

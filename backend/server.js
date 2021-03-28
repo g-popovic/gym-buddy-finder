@@ -6,10 +6,10 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const setupSockets = require('./utils/socketSetup');
-const sessionStore = new session.MemoryStore();
+const MemoryStore = require('memorystore')(session);
 
+const memoryStore = new MemoryStore({ checkPeriod: 10 * 60 * 1000 });
 const isProduction = process.env.NODE_ENV === 'production';
-
 const app = express();
 
 // Initialize connection to MongoDB
@@ -34,7 +34,7 @@ app.use(
 			// secure: isProduction,
 			// httpOnly: false
 		},
-		store: sessionStore
+		store: memoryStore
 	})
 );
 app.use(express.json());
@@ -52,7 +52,7 @@ app.use('/api', routes);
 
 const server = http.createServer(app);
 
-setupSockets(server);
+setupSockets(server, memoryStore);
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log('Server running on port ' + PORT));
