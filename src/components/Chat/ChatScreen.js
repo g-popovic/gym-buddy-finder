@@ -137,7 +137,7 @@ const ChatScreen = () => {
 									<h3 className='center text-secondary'>Loading...</h3>
 								) : (
 									messages.map(message =>
-										message.name ? (
+										message.to === userContext.id ? (
 											<div className='chatScreen_message'>
 												<p className='chatScreen_text'>{message.message}</p>
 											</div>
