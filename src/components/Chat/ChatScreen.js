@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Avatar from '@material-ui/core/Avatar';
+import io from 'socket.io-client';
+import { UserContext } from '../../provider/UserContext';
+import Chats from './Chats';
+import './ChatScreen.scss';
 
-import './ChatScreen.css';
+let socket;
 
 const ChatScreen = () => {
 	const [userContext] = useContext(UserContext);
@@ -93,23 +97,25 @@ const ChatScreen = () => {
 	// }
 
 	return (
-		<div className='row chats-container'>
+		<div className='row chats-container m-0'>
 			<div className='col-3'>
 				<Chats />
 			</div>
 			<div className='chatScreen col-9'>
-				<p className='chatScreen_timestamp'>YOU MATCHED WITH ELLEN ON 10/08/20</p>
-				{messages.map(message =>
-					message.name ? (
-						<div className='chatScreen_message'>
-							<p className='chatScreen_text'>{message.message}</p>
-						</div>
-					) : (
-						<div className='chatScreen_message'>
-							<p className='chatScreen_text text_user'>{message.message}</p>
-						</div>
-					)
-				)}
+				<div>
+					<p className='chatScreen_timestamp'>YOU MATCHED WITH ELLEN ON 10/08/20</p>
+					{messages.map(message =>
+						message.name ? (
+							<div className='chatScreen_message'>
+								<p className='chatScreen_text'>{message.message}</p>
+							</div>
+						) : (
+							<div className='chatScreen_message'>
+								<p className='chatScreen_text text_user'>{message.message}</p>
+							</div>
+						)
+					)}
+				</div>
 				<form onSubmit={sendMessage} className='input-group'>
 					<input
 						type='text'
