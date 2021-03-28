@@ -28,9 +28,10 @@ router.get('/profile-info', async (req, res, next) => {
 
 router.get('/search-users', async (req, res, next) => {
 	try {
-		const { goal, maxDistance = 10000, page = 0 } = req.body;
+		const { goal, username, maxDistance: distanceString, page = 0 } = req.query;
+		const maxDistance = parseInt(distanceString, 10);
 
-		const docsPerPage = 20;
+		const docsPerPage = 40;
 
 		const locationPlaceholder = {
 			type: 'Point',
@@ -47,7 +48,8 @@ router.get('/search-users', async (req, res, next) => {
 						...(req.session.user
 							? { _id: { $ne: mongoose.Types.ObjectId(req.session.user.id) } }
 							: {}),
-						...(goal ? { goal: goal } : {})
+						...(goal ? { goal: { $eq: goal } } : {}),
+						...(username ? { username: { $regex: username, $options: '$i' } } : {})
 					}
 				}
 			},
@@ -85,7 +87,6 @@ router.get('/messages/:id', authUser, async (req, res, next) => {
 		const friendId = mongoose.Types.ObjectId(req.params.id);
 		const myId = mongoose.Types.ObjectId(req.user.id);
 
-		console.log({ myId, friendId });
 		const result = await Message.aggregate([
 			{
 				$match: {
