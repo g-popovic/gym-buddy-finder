@@ -107,28 +107,26 @@ const ChatScreen = () => {
 				{messages.map(message =>
 					message.name ? (
 						<div className='chatScreen_message'>
-							<Avatar
-								className='chatScreen_image'
-								alt={message.name}
-								src={message.image}
-							/>
 							<p className='chatScreen_text'>{message.message}</p>
 						</div>
 					) : (
 						<div className='chatScreen_message'>
-							<p className='chatScreen_textUser'>{message.message}</p>
+							<p className='chatScreen_text text_user'>{message.message}</p>
 						</div>
 					)
 				)}
-				<form onSubmit={sendMessage} className='chatScreen_input'>
+				<form onSubmit={sendMessage} className='input-group'>
 					<input
-						valeu={input}
-						onChange={e => setInput(e.target.value)}
-						className='chatScreen_inputField'
 						type='text'
-						placeholder='Type a message...'
+						className='form-control'
+						placeholder="Recipient's username"
+						aria-label="Recipient's username"
+						aria-describedby='button-addon2'
 					/>
-					<button type='submit' className='chatScreen_inputButton'>
+					<button
+						className='btn btn-outline-dark search-btn'
+						type='button'
+						id='button-addon2'>
 						SEND
 					</button>
 				</form>
