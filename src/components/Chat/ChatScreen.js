@@ -1,12 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import io from 'socket.io-client';
-import { UserContext } from '../../provider/UserContext';
-import Chats from './Chats';
 
-import './ChatScreen.scss';
-
-let socket;
+import './ChatScreen.css';
 
 const ChatScreen = () => {
 	const [userContext] = useContext(UserContext);
